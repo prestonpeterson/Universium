@@ -3,20 +3,21 @@ pragma solidity ^0.4.18;
 import "./EIP20Interface.sol";
 
 contract Universium is EIP20Interface {
-
     uint256 constant MAX_UINT256 = 2**256 - 1;
-    
-    // TODO verify total supply. currently ten million
-    uint256 public constant _totalSupply = 10000000;
 
+    uint256 public constant _totalSupply = 101000000;
     string public name = "Universium";
-    // TODO verify decimals
-    uint8 public decimals = 0;                //How many decimals to show.
-    // TODO verify symbol
-    string public symbol = "UNI";                 //An identifier: eg SBX
+    uint8 public decimals = 0;
+    string public symbol = "UNIV";
+
+    // Balances for each account
+    mapping (address => uint256) balances;
+    // Owner of account approves the transfer of an amount to another account
+    mapping (address => mapping (address => uint256)) allowed;
 
      function Universium() public {
-        balances[msg.sender] = _totalSupply;               // Give the creator all initial tokens
+        // Give the creator all initial tokens. TODO verify this
+        balances[msg.sender] = _totalSupply;
     }
 
     function transfer(address _to, uint256 _value) public returns (bool success) {
@@ -59,7 +60,4 @@ contract Universium is EIP20Interface {
     view public returns (uint256 remaining) {
       return allowed[_owner][_spender];
     }
-
-    mapping (address => uint256) balances;
-    mapping (address => mapping (address => uint256)) allowed;
 }
